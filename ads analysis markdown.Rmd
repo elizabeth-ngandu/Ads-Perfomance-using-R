@@ -1,19 +1,16 @@
 
 
-```R
-###Defining the Question
+## Defining the Question
 A Kenyan entrepreneur has created an online cryptography course and would want to advertise it on her blog. She currently targets audiences originating from various countries. In the past, she ran ads to advertise a related course on the same blog and collected data in the process. She would now like to employ your services as a Data Science Consultant to help her identify which individuals are most likely to click on her ads. 
 
-```R
 
-```R
-###Defining the Metric for Success
+
+
+## Defining the Metric for Success
 The project will be successful upon identifying which individuals are most likely to click on the ads
 
-```R
 
-```R
-### Experimental Design
+## Experimental Design
 
 Installing the necesary packages
 Loading the libraries
@@ -21,17 +18,15 @@ Reading the dataset
 Data cleaning
 Exploratory Data Analysis
 
+
+
+
+
+##Loading Libraries
+
 ```R
-
-
-```R
-###Loading Libraries
-
 library(data.table)
 
-```R
-
-```R
 ##Load our dataset
 data <- fread('advertising.csv')
 
@@ -47,11 +42,12 @@ str(data)
 #dimensions of the dataset
 dim(data)
 
-```R
+```
 
-```R
+
 ### Cleaning our dataset
 
+```R
 #checking if there is any null values
 colSums(is.na(data))
 
@@ -65,6 +61,9 @@ data<- data[!duplicated(data),]
 data
 dim(data) #as seen earlier no duplicated rows
 
+```
+
+```R
 #checking for ouliers in various columns
 
 boxplot(data$`Daily Time Spent on Site`) # no outliers
@@ -87,11 +86,11 @@ newdata<-area_income[!area_income %in% boxplot.stats(area_income)$out]
 
 str(newdata)
 
-```R
+```
+
+## Exploratory Data Analysis
 
 ```R
-### Exploratory Data Analysis
-
 #average time spent on the site
 average_time<-mean(data$`Daily Time Spent on Site`)
 average_time  # 65 units of time spent on the site
@@ -116,23 +115,35 @@ time_spent<- data$`Daily Time Spent on Site`
 cov(internet_usage, time_spent) #360.9919: indicates a positive linear relationship btn the two variables
 
 cor(internet_usage, time_spent) #0.5186585 : indicates a average linear correlation
+```
+### Scatter plot
 
+```R
 plot(internet_usage, time_spent, xlab = "Daily internet usage", ylab = "Daily time spent on the internet")
+ ```
  
 
-# Grouped Bar Plot
+### Grouped Bar Plot
+
+```R
+
 counts <- table( data$Male, data$`Clicked on Ad`)
 
 barplot(counts, main="Gender Distribution by Clicking the ad",
         xlab="Clicked on ad", col=c("darkblue","red"),
         legend = rownames(counts), beside=TRUE)
         
+```
+
+```R
 counts # majority of the gender that clicked the add was female where 269 female clicked the ad
          #while 231 male never clicked the ad
 
 counts2 <-table(data$Male, data$Age)
 counts2
+```
 
+```R
 #load the dplyr package
 library(dplyr)
 head(data)
@@ -144,45 +155,63 @@ head(clicked)
 #create a table of country and how many times people from each country clicked the ad
 counts3<- table(clicked$Country)
 max(counts3) # Ethiopia had the highest number of people clicking the ad (7 people)
+```
 
+```R
 mean(clicked$`Area Income`) #avearge area income of theose that clisked the ad is 48614
+```
 
+```R
 avg_time <- mean(clicked$`Daily Time Spent on Site`)
 avg_time  # an average of 53 units of time spent on the site for those who clicked
 
+```
+```R
 avg_internet<-mean(clicked$`Daily Internet Usage`)
 avg_internet # an average 145 units of of internet used for those wjo clicked on the ad
+```
 
+```R
 #distribution for the people who clicked the ad
 hist(clicked$Age)
 
+```
+
+```R
 avg_age<- mean(clicked$Age)
 avg_age # majority of the people who clicked the ad were around 40 years of age
 
+```
+```R
 #function for mode
 getmode <- function(v) {
   uniqv <- unique(v)
   uniqv[which.max(tabulate(match(v, uniqv)))]
 }
 
+```
+
+```R
 clickers_mode<- getmode(clicked$Age)
 clickers_mode #majority of the people who clicked were 45 years old
 
+```
+```R
 boxplot(`Daily Time Spent on Site`~ Male, data = clicked, xlab= "Gender", ylab= "`Daily Time Spent on Site") #more females spent alot of time on the site
 
-```R
+```
 
-```R
-### Conclusion and Recomendations
 
-#from the analysis:
-#majority of those who clicked on the ad; were female
-#more females spent a lot of time on the site
-#average age of 40
-#specifically 45 year olds clicked the more 
-#both genders had the same count of those who did not click the ad
-# an average of 53 units of time spent on the site for those who clicked
-# Ethiopia had the highest number of people clicking the ad (7 people)
-# an average 145 units of of internet used for those wjo clicked on the ad
-
+## Conclusion and Recomendations
 ```R
+from the analysis:
+majority of those who clicked on the ad; were female
+more females spent a lot of time on the site
+average age of 40
+specifically 45 year olds clicked the more 
+both genders had the same count of those who did not click the ad
+an average of 53 units of time spent on the site for those who clicked
+Ethiopia had the highest number of people clicking the ad (7 people)
+an average 145 units of of internet used for those wjo clicked on the ad
+
+```
